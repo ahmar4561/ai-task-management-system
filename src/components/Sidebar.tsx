@@ -18,8 +18,8 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* --- Mobile Header (Sirf Mobile par dikhega) --- */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-slate-950 border-b border-slate-800 sticky top-0 z-[60]">
+      {/* --- Mobile Header --- */}
+      <div className="md:hidden flex items-center justify-between p-4 bg-slate-950 border-b border-slate-800 sticky top-0 z-[100]">
         <div className="flex items-center gap-2">
           <div className="bg-blue-600 p-1.5 rounded-lg">
             <BrainCircuit size={18} className="text-white" />
@@ -34,22 +34,22 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* --- Overlay (Mobile par sidebar khulne par background blur karne ke liye) --- */}
+      {/* --- Overlay --- */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[40] md:hidden"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* --- Sidebar Main Container --- */}
-      <div className={`
-        fixed left-0 top-0 h-screen bg-slate-950 border-r border-slate-800 p-4 flex flex-col z-[50] transition-transform duration-300
+      <aside className={`
+        fixed left-0 top-0 h-screen bg-slate-950 border-r border-slate-800 p-4 flex flex-col transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-        md:translate-x-0 md:sticky md:w-64 w-[280px]
+        md:relative md:translate-x-0 md:flex z-[120] w-[280px] md:w-64
       `}>
         
-        {/* Logo Section (Desktop par nazar aayega) */}
+        {/* Logo Section */}
         <div className="hidden md:flex items-center gap-2 mb-10 px-2">
           <div className="bg-blue-600 p-2 rounded-lg shadow-lg shadow-blue-900/20">
             <BrainCircuit className="text-white" />
@@ -66,7 +66,7 @@ export default function Sidebar() {
               <Link 
                 key={item.name}
                 href={item.href}
-                onClick={() => setIsOpen(false)} // Mobile par click karne se menu band ho jaye
+                onClick={() => setIsOpen(false)} 
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
                   isActive 
                   ? "bg-blue-600/10 text-blue-400 border border-blue-500/20" 
@@ -88,10 +88,10 @@ export default function Sidebar() {
             Developer Mode
           </p>
           <div className="px-4 py-2 text-xs text-slate-500 italic">
-            v1.0.2 - Stable [cite: 97]
+            v1.0.2 - Stable
           </div>
         </div>
-      </div>
+      </aside>
     </>
   );
 }
