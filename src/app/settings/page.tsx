@@ -18,7 +18,6 @@ export default function SettingsPage() {
     status: "Professional Developer"
   };
 
-  // 1. Load data once on mount
   useEffect(() => {
     const savedPic = localStorage.getItem("profilePic");
     const savedZoom = localStorage.getItem("profileZoom");
@@ -29,7 +28,6 @@ export default function SettingsPage() {
     if (savedPos) setPosition(JSON.parse(savedPos));
   }, []);
 
-  // 2. Persistent Save Function
   useEffect(() => {
     if (profilePic) {
       localStorage.setItem("profilePic", profilePic);
@@ -45,7 +43,6 @@ export default function SettingsPage() {
       reader.onloadend = () => {
         const base64String = reader.result as string;
         setProfilePic(base64String);
-        // Reset only for new image
         setZoom(1); 
         setPosition({ x: 0, y: 0 }); 
       };
@@ -70,22 +67,24 @@ export default function SettingsPage() {
   const stopDragging = () => setIsDragging(false);
 
   return (
-    <div className="p-8 md:p-12 text-white min-h-screen font-sans select-none cursor-default">
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold flex items-center gap-3">
-          <Settings className="text-blue-400" /> Account Settings
+    <div className="p-5 md:p-10 text-white min-h-screen font-sans select-none cursor-default">
+      <header className="mb-8">
+        <h1 className="text-2xl font-bold flex items-center gap-3 tracking-tight">
+          <Settings className="text-blue-400" size={24} /> Account Settings
         </h1>
-        <p className="text-slate-400 mt-2">Manage and customize your professional profile preferences.</p>
+        <p className="text-slate-400 mt-1.5 text-sm">Manage your professional profile preferences.</p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Compact Profile Card */}
         <div className="lg:col-span-1">
-          <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-3xl text-center relative overflow-hidden shadow-2xl">
+          <div className="bg-slate-900/40 border border-slate-800/60 p-6 rounded-3xl text-center relative overflow-hidden backdrop-blur-md">
             
             <div className="relative group w-fit mx-auto">
+              {/* Profile Image - Size reduced for better look */}
               <div 
                 ref={containerRef}
-                className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-blue-500/20 shadow-2xl bg-[#0f172a] cursor-move active:cursor-grabbing"
+                className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-2 border-blue-500/30 shadow-2xl bg-slate-950 cursor-move"
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={stopDragging}
@@ -106,25 +105,24 @@ export default function SettingsPage() {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <User size={56} className="text-slate-600" />
+                    <User size={40} className="text-slate-700" />
                   </div>
                 )}
                 
                 {profilePic && !isDragging && (
-                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-[10px] pointer-events-none">
-                     <Move size={16} className="mb-1" /> Drag to Adjust
+                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-[8px] font-bold uppercase tracking-tighter">
+                     <Move size={12} className="mb-1" /> Adjust
                    </div>
                 )}
               </div>
 
-              {/* Floating Zoom Slider */}
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-48 h-0 z-30">
+              {/* Floating Zoom Control */}
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-40 z-30 opacity-0 group-hover:opacity-100 transition-all scale-90 group-hover:scale-100 pointer-events-none group-hover:pointer-events-auto">
                 {profilePic && (
-                  <div className="transition-all duration-300 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 bg-slate-900/95 backdrop-blur-md py-3 px-4 rounded-2xl border border-slate-800 shadow-2xl">
-                    <p className="text-[10px] text-slate-500 mb-2 uppercase font-bold tracking-widest text-center">Adjust Zoom</p>
+                  <div className="bg-slate-900 border border-slate-800 p-2 rounded-xl shadow-2xl">
                     <input 
                       type="range" 
-                      min="0.5" max="4" step="0.05" 
+                      min="0.5" max="3" step="0.05" 
                       value={zoom} 
                       onChange={(e) => setZoom(parseFloat(e.target.value))}
                       className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
@@ -133,62 +131,66 @@ export default function SettingsPage() {
                 )}
               </div>
 
-              <label htmlFor="file-upload" className="absolute bottom-6 -right-2 bg-blue-600 p-2 rounded-full cursor-pointer hover:scale-110 transition-transform shadow-xl border-2 border-slate-900 z-10">
-                <Camera size={16} className="text-white" />
+              <label htmlFor="file-upload" className="absolute bottom-1 -right-1 bg-blue-600 p-1.5 rounded-full cursor-pointer hover:scale-110 transition-transform shadow-lg border border-slate-900 z-10">
+                <Camera size={14} className="text-white" />
                 <input id="file-upload" type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
               </label>
             </div>
 
-            <div className="mt-8">
-              <h2 className="text-xl font-bold">{userProfile.name}</h2>
-              <p className="text-blue-400 text-sm mb-6 font-semibold uppercase tracking-wider">{userProfile.role}</p>
+            <div className="mt-4">
+              <h2 className="text-lg font-bold tracking-tight">{userProfile.name}</h2>
+              <p className="text-blue-400 text-[11px] mb-4 font-bold uppercase tracking-[0.1em]">{userProfile.role}</p>
             </div>
             
-            <div className="space-y-3 text-left border-t border-slate-800 pt-6">
-              <div className="flex items-center gap-3 text-slate-400 text-sm">
-                <Mail size={16} className="text-blue-400/50" /> {userProfile.email}
+            {/* Info Items - Compact look */}
+            <div className="space-y-2 text-left border-t border-slate-800/50 pt-4">
+              <div className="flex items-center gap-2.5 text-slate-400 text-xs">
+                <Mail size={14} className="text-blue-500/50" /> 
+                <span className="truncate">{userProfile.email}</span>
               </div>
-              <div className="flex items-center gap-3 text-slate-400 text-sm">
-                <Briefcase size={16} className="text-blue-400/50" /> {userProfile.status}
+              <div className="flex items-center gap-2.5 text-slate-400 text-xs">
+                <Briefcase size={14} className="text-blue-500/50" /> 
+                <span>{userProfile.status}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-3xl shadow-lg">
-            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <ShieldCheck className="text-green-400" size={20} /> Security & System Status
+        {/* System Stats Section */}
+        <div className="lg:col-span-2 space-y-5">
+          <div className="bg-slate-900/40 border border-slate-800/60 p-6 rounded-3xl shadow-sm">
+            <h3 className="text-sm font-bold mb-5 flex items-center gap-2 text-slate-300 uppercase tracking-widest">
+              <ShieldCheck className="text-emerald-500" size={16} /> System Infrastructure
             </h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-4 bg-slate-800/30 rounded-2xl border border-slate-800/50 hover:bg-slate-800/50 transition-colors">
-                <div>
-                  <p className="font-medium text-sm">AI Processing Core</p>
-                  <p className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Gemini v1.5 Flash (Operational)</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="flex justify-between items-center p-3.5 bg-slate-800/20 rounded-2xl border border-slate-800/50 hover:border-slate-700/80 transition-all">
+                <div className="min-w-0">
+                  <p className="font-semibold text-xs truncate">AI Core v1.5</p>
+                  <p className="text-[9px] text-slate-500 font-mono uppercase">Operational</p>
                 </div>
-                <span className="bg-green-500/10 text-green-500 text-[10px] px-3 py-1 rounded-full border border-green-500/20 font-bold uppercase tracking-widest">Online</span>
+                <span className="bg-emerald-500/10 text-emerald-500 text-[9px] px-2.5 py-1 rounded-full border border-emerald-500/20 font-bold uppercase tracking-wider">Online</span>
               </div>
-              <div className="flex justify-between items-center p-4 bg-slate-800/30 rounded-2xl border border-slate-800/50 hover:bg-slate-800/50 transition-colors">
-                <div>
-                  <p className="font-medium text-sm">Database Infrastructure</p>
-                  <p className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Supabase Cloud Sync</p>
+              <div className="flex justify-between items-center p-3.5 bg-slate-800/20 rounded-2xl border border-slate-800/50 hover:border-slate-700/80 transition-all">
+                <div className="min-w-0">
+                  <p className="font-semibold text-xs truncate">Supabase Sync</p>
+                  <p className="text-[9px] text-slate-500 font-mono uppercase">Live Data</p>
                 </div>
-                <span className="bg-green-500/10 text-green-500 text-[10px] px-3 py-1 rounded-full border border-green-500/20 font-bold uppercase tracking-widest">Active</span>
+                <span className="bg-emerald-500/10 text-emerald-500 text-[9px] px-2.5 py-1 rounded-full border border-emerald-500/20 font-bold uppercase tracking-wider">Active</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-3xl shadow-lg">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Info className="text-yellow-400" size={20} /> Software Information
+          <div className="bg-slate-900/40 border border-slate-800/60 p-6 rounded-3xl shadow-sm">
+            <h3 className="text-sm font-bold mb-4 flex items-center gap-2 text-slate-300 uppercase tracking-widest">
+              <Info className="text-blue-400" size={16} /> Software Build
             </h3>
-            <div className="flex items-center gap-6">
-               <div className="px-5 py-3 bg-slate-800 rounded-2xl border border-slate-700">
-                  <span className="text-slate-400 text-[10px] block uppercase font-bold mb-1">Build Version</span>
-                  <span className="font-mono text-blue-400 font-bold tracking-widest">v0.2 - STABLE</span>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+               <div className="px-4 py-2 bg-slate-950 rounded-xl border border-slate-800">
+                  <span className="text-slate-500 text-[9px] block font-bold mb-0.5 uppercase tracking-tighter">Version Control</span>
+                  <span className="font-mono text-blue-400 text-xs font-bold tracking-widest italic">v1.0.2-RELEASE</span>
                </div>
-               <p className="text-xs text-slate-500 leading-relaxed italic border-l border-slate-800 pl-4">
-                 Your system is running the latest deployment of TaskAI. All features are up-to-date and optimized.
+               <p className="text-[11px] text-slate-500 leading-relaxed italic border-l-2 border-slate-800 pl-4">
+                 Your system is running the latest deployment. Features are optimized for performance.
                </p>
             </div>
           </div>

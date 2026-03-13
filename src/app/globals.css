@@ -1,2 +1,46 @@
 @import "tailwindcss";
 @source "../";
+
+/* --- Premium & Slim UI Updates --- */
+@layer base {
+  html {
+    /* Mobile par text ko chota aur clean dikhane ke liye */
+    font-size: 14px; 
+  }
+  
+  body {
+    @apply antialiased tracking-tight text-slate-200;
+  }
+}
+
+@layer components {
+  /* Dashboard Cards ko professional aur slim banane ke liye */
+  .card-premium {
+    @apply bg-slate-900/40 backdrop-blur-md border border-slate-800/50 
+           rounded-2xl p-4 md:p-6 transition-all duration-300 
+           hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/5;
+  }
+
+  /* Buttons aur badges ko compact karne ke liye */
+  .btn-slim {
+    @apply px-4 py-2 text-sm font-semibold rounded-xl transition-all active:scale-95;
+  }
+
+  /* Text gradients for a modern look */
+  .text-premium {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-white to-slate-400;
+  }
+}
+
+/* Scrollbar ko patla (slim) karne ke liye */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-800 rounded-full;
+}
