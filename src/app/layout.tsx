@@ -16,19 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-slate-950 text-white min-h-screen antialiased overflow-x-hidden`}>
-        <div className="flex flex-col md:flex-row min-h-screen">
-          {/* Sidebar - Mobile par drawer aur Desktop par side mein */}
+    <html lang="en" className="dark">
+      <body className={`${inter.className} bg-slate-950 text-white min-h-screen antialiased selection:bg-blue-500/30`}>
+        <div className="flex flex-col md:flex-row min-h-screen relative">
           <Sidebar /> 
           
-          {/* Main Content Area */}
           <main className="flex-1 flex flex-col min-w-0">
-            {/* Mobile par top-bar ki vajah se content niche karne ke liye 'pt-20'.
-               Desktop par padding normal karne ke liye 'md:pt-0'.
-            */}
-            <div className="flex-1 p-4 md:p-8 pt-20 md:pt-8 overflow-y-auto">
-              <div className="max-w-7xl mx-auto">
+            {/* Content Container with better spacing */}
+            <div className="flex-1 p-5 md:p-10 pt-28 md:pt-10 overflow-y-auto">
+              <div className="max-w-6xl mx-auto space-y-8">
                 {children}
               </div>
             </div>
